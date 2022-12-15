@@ -1,11 +1,7 @@
 package com.example.shopcart.controller;
 
 import com.example.shopcart.models.Cart;
-import com.example.shopcart.repository.CartRepository;
-import com.example.shopcart.response.CartResponse;
 import com.example.shopcart.service.CartService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,13 +17,27 @@ public class CartController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<CartResponse>> getAllCarts() {
-        return new ResponseEntity<>(cartService.getAllCarts(), HttpStatus.OK);
+    public List<Cart> getAllCarts() {
+        return cartService.getAllCarts();
+    }
+
+    @GetMapping("/{cartId}")
+    public Cart getSingleCart(@PathVariable Long cartId) {
+        return cartService.getSingleCart(cartId);
     }
 
     @PostMapping()
     public Cart postCart(@RequestBody Cart cart) {
         return cartService.addCart(cart);
+    }
+
+    @PatchMapping("/{cartId}/clear")
+    public Cart clearCart(@PathVariable Long cartId, @RequestBody Cart updateCart) {
+        Cart cart = cartService.getSingleCart(cartId);
+        if (updateCart.getStatus() != null) cart.setStatus((updateCart.getStatus()));
+        if (updateCart.getTotalPrice() > -1) cart.setTotalPrice((updateCart.getTotalPrice()));
+        cartService.clearCart(cart);
+        return cart;
     }
 
 }

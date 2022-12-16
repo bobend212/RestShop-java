@@ -1,7 +1,14 @@
 package com.example.shopcart.controller;
 
+import com.example.shopcart.enums.OrderStatus;
 import com.example.shopcart.models.Cart;
+import com.example.shopcart.models.dto.CartDTO;
+import com.example.shopcart.models.dto.CartResponseDTO;
 import com.example.shopcart.service.CartService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,36 +17,45 @@ import java.util.List;
 @RequestMapping("/carts")
 public class CartController {
 
-    private final CartService cartService;
-
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
+    @Autowired
+    private CartService cartService;
 
     @GetMapping()
-    public List<Cart> getAllCarts() {
-        return cartService.getAllCarts();
+    public ResponseEntity<List<CartResponseDTO>> getAllCarts() {
+        return new ResponseEntity<>(cartService.getAllCarts(), HttpStatus.OK);
     }
 
     @GetMapping("/{cartId}")
-    public Cart getSingleCart(@PathVariable Long cartId) {
-        return cartService.getSingleCart(cartId);
+    public ResponseEntity<CartResponseDTO> getSingleCart(@PathVariable Long cartId) {
+        return cartService.getSingleCart(cartId).map(cart -> new ResponseEntity<>(cart, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping()
-    public Cart postCart(@RequestBody Cart cart) {
-        return cartService.addCart(cart);
+    public Cart createCart() {
+        Cart cart = new Cart();
+        cart.setOrder_status(OrderStatus.EMPTY);
+        cart.setTotal_price(0f);
+        return cartService.createCart(cart);
     }
 
-    @PatchMapping("/{cartId}/clear")
-    public Cart clearCart(@PathVariable Long cartId, @RequestBody Cart updateCart) {
-        Cart cart = cartService.getSingleCart(cartId);
-        if (updateCart.getOrder_status() != null)
-            cart.setOrder_status((updateCart.getOrder_status()));
-        if (updateCart.getTotal_price() > -1)
-            cart.setTotal_price((updateCart.getTotal_price()));
-        cartService.clearCart(cart);
-        return cart;
+    @PostMapping("/{cartId}/add-product/{productId}")
+    public ResponseEntity<CartDTO> addProductToCart(@PathVariable final Long cartId,
+            @PathVariable final Long productId) {
+        Cart cart = cartService.addProductToCart(cartId, productId);
+        return new ResponseEntity<>(CartDTO.from(cart), HttpStatus.OK);
     }
+
+    // @PatchMapping("/{cartId}/clear")
+    // public Cart clearCart(@PathVariable Long cartId, @RequestBody Cart
+    // updateCart) {
+    // Optional<CartResponseDTO> cart = cartService.getSingleCart(cartId);
+    // if (updateCart.getOrder_status() != null)
+    // cart.setOrder_status((updateCart.getOrder_status()));
+    // if (updateCart.getTotal_price() > -1)
+    // cart.setTotal_price((updateCart.getTotal_price()));
+    // cartService.clearCart(cart);
+    // return cart;
+    // }
 
 }

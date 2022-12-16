@@ -34,8 +34,10 @@ public class CartController {
     @PatchMapping("/{cartId}/clear")
     public Cart clearCart(@PathVariable Long cartId, @RequestBody Cart updateCart) {
         Cart cart = cartService.getSingleCart(cartId);
-        if (updateCart.getStatus() != null) cart.setStatus((updateCart.getStatus()));
-        if (updateCart.getTotalPrice() > -1) cart.setTotalPrice((updateCart.getTotalPrice()));
+        if (updateCart.getOrder_status() != null)
+            cart.setOrder_status((updateCart.getOrder_status()));
+        if (updateCart.getTotal_price() > -1)
+            cart.setTotal_price((updateCart.getTotal_price()));
         cartService.clearCart(cart);
         return cart;
     }

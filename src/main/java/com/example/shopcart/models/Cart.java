@@ -15,12 +15,11 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_id")
-    private Long id;
+    private Long id_cart;
 
-    private String status;
+    private String order_status;
 
-    private Float totalPrice;
+    private Float total_price;
 
     @OneToMany(mappedBy = "cart")
     private List<Product> products;

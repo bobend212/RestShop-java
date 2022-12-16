@@ -2,8 +2,6 @@ package com.example.shopcart.repository;
 
 import com.example.shopcart.models.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 }

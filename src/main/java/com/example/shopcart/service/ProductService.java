@@ -24,8 +24,8 @@ public class ProductService {
         return products;
     }
 
-    public Optional<ProductResponseDTO> getSingleProduct(Long productId) {
-        return productRepository.findById(productId).map(ProductResponseDTO::new);
+    public Product getSingleProduct(Long productId) {
+        return productRepository.findById(productId).orElseThrow();
     }
 
     public Product createProduct(Product product) {

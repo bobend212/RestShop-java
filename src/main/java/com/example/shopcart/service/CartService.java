@@ -5,25 +5,33 @@ import com.example.shopcart.models.Cart;
 import com.example.shopcart.models.Product;
 import com.example.shopcart.models.dto.CartDTO;
 import com.example.shopcart.models.dto.CartResponseDTO;
+import com.example.shopcart.models.dto.ProductUpdateDTO;
 import com.example.shopcart.repository.CartRepository;
 import com.example.shopcart.repository.ProductRepository;
-
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-@AllArgsConstructor
 public class CartService {
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+    private final ProductService productService;
+
+    @Autowired
+    public CartService(CartRepository cartRepository, ProductRepository productRepository, ProductService productService) {
+        this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
+        this.productService = productService;
+    }
 
     public List<Cart> getAllCarts() {
         return StreamSupport
@@ -36,10 +44,6 @@ public class CartService {
     }
 
     public Cart createCart(Cart cart) {
-        return cartRepository.save(cart);
-    }
-
-    public Cart clearCart(Cart cart) {
         return cartRepository.save(cart);
     }
 
@@ -57,9 +61,17 @@ public class CartService {
 
     @Transactional
     public Cart deleteProductFromCart(Long cartId, Long productId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow();
-        Product product = productRepository.findById(productId).orElseThrow();
+        Cart cart = getSingleCart(cartId);
+        Product product = productService.getSingleProduct(productId);
         cart.deleteProduct(product);
+        product.setCart(null);
         return cart;
+    }
+
+    public boolean deleteCart(Long cartId) {
+        return cartRepository.findById(cartId).map(cart -> {
+            cartRepository.delete(cart);
+            return true;
+        }).orElse(false);
     }
 }

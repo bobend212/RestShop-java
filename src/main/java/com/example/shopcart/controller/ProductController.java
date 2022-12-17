@@ -2,6 +2,7 @@ package com.example.shopcart.controller;
 
 import java.util.List;
 
+import com.example.shopcart.models.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,9 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponseDTO> getSingleProduct(@PathVariable Long productId) {
-        return productService.getSingleProduct(productId).map(product -> new ResponseEntity<>(product, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<ProductDTO> getSingleProduct(@PathVariable Long productId) {
+        Product product = productService.getSingleProduct(productId);
+        return new ResponseEntity<>(ProductDTO.from(product), HttpStatus.OK);
     }
 
     @PostMapping()

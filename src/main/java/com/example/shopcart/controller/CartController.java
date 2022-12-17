@@ -2,13 +2,17 @@ package com.example.shopcart.controller;
 
 import com.example.shopcart.enums.OrderStatus;
 import com.example.shopcart.models.Cart;
+import com.example.shopcart.models.Product;
 import com.example.shopcart.models.dto.CartDTO;
 import com.example.shopcart.models.dto.CartResponseDTO;
+import com.example.shopcart.models.dto.ProductResponseDTO;
+import com.example.shopcart.models.dto.ProductUpdateDTO;
 import com.example.shopcart.service.CartService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,23 +53,17 @@ public class CartController {
         return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
     }
 
-    @PostMapping("/{cartId}/delete-product/{productId}")
+    @DeleteMapping("/{cartId}/delete-product/{productId}")
     public ResponseEntity<CartDTO> deleteProductFromCart(@PathVariable final Long cartId,
                                                     @PathVariable final Long productId) {
         Cart cart = cartService.deleteProductFromCart(cartId, productId);
         return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
     }
 
-    // @PatchMapping("/{cartId}/clear")
-    // public Cart clearCart(@PathVariable Long cartId, @RequestBody Cart
-    // updateCart) {
-    // Optional<CartResponseDTO> cart = cartService.getSingleCart(cartId);
-    // if (updateCart.getOrder_status() != null)
-    // cart.setOrder_status((updateCart.getOrder_status()));
-    // if (updateCart.getTotal_price() > -1)
-    // cart.setTotal_price((updateCart.getTotal_price()));
-    // cartService.clearCart(cart);
-    // return cart;
-    // }
+    @DeleteMapping("/{cartId}")
+    public ResponseEntity<CartResponseDTO> deleteCart(@PathVariable Long cartId) {
+        return cartService.deleteCart(cartId) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
 }

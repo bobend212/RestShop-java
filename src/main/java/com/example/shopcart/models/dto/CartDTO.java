@@ -1,5 +1,6 @@
 package com.example.shopcart.models.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,17 +16,10 @@ public class CartDTO {
     private Long id_cart;
     private OrderStatus order_status;
     private Float total_price;
-    private List<ProductDTO> productsDto;
-
-    public CartDTO(Cart cart) {
-        this.id_cart = cart.getId_cart();
-        this.order_status = cart.getOrder_status();
-        this.total_price = sumPrice(cart.getProducts());
-        this.productsDto = cart.getProducts().stream().map(ProductDTO::from).collect(Collectors.toList());
-    }
+    private List<ProductDTO> productsDto = new ArrayList<>();
 
     public static CartDTO mapFrom(Cart cart) {
-        CartDTO cartDto = new CartDTO(cart);
+        CartDTO cartDto = new CartDTO();
         cartDto.setId_cart(cart.getId_cart());
         cartDto.setOrder_status(cart.getOrder_status());
         cartDto.setProductsDto(cart.getProducts().stream().map(ProductDTO::from).collect(Collectors.toList()));

@@ -30,4 +30,7 @@ public class Cart {
         products.add(product);
     }
 
+    public void deleteProduct(Product product) {
+        products.remove(product);
+    }
 }

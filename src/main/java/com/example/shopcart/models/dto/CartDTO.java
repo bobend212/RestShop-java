@@ -17,8 +17,15 @@ public class CartDTO {
     private Float total_price;
     private List<ProductDTO> productsDto;
 
-    public static CartDTO from(Cart cart) {
-        CartDTO cartDto = new CartDTO();
+    public CartDTO(Cart cart) {
+        this.id_cart = cart.getId_cart();
+        this.order_status = cart.getOrder_status();
+        this.total_price = sumPrice(cart.getProducts());
+        this.productsDto = cart.getProducts().stream().map(ProductDTO::from).collect(Collectors.toList());
+    }
+
+    public static CartDTO mapFrom(Cart cart) {
+        CartDTO cartDto = new CartDTO(cart);
         cartDto.setId_cart(cart.getId_cart());
         cartDto.setOrder_status(cart.getOrder_status());
         cartDto.setProductsDto(cart.getProducts().stream().map(ProductDTO::from).collect(Collectors.toList()));

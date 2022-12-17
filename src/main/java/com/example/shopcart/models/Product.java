@@ -3,7 +3,6 @@ package com.example.shopcart.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table
 @Entity
 @Data
 @NoArgsConstructor

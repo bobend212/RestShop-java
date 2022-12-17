@@ -16,9 +16,6 @@ public class ProductDTO {
         productDto.setId_product(product.getId_product());
         productDto.setName(product.getName());
         productDto.setPrice(product.getPrice());
-        // if(Objects.nonNull(product.getCart())){
-        // productDto.setPlainCartDto(PlainCartDto.from(product.getCart()));
-        // }
         return productDto;
     }
 }

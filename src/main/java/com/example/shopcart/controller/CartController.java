@@ -66,4 +66,14 @@ public class CartController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PutMapping("/clear")
+    public Cart clearCart(@RequestBody Cart cart) {
+        Cart newCart = new Cart();
+        newCart.setId_cart(cart.getId_cart());
+        newCart.setOrder_status(cart.getOrder_status());
+        newCart.setTotal_price(cart.getTotal_price());
+        newCart.setProducts(cart.getProducts());
+        return cartService.clearCart(newCart);
+    }
+
 }

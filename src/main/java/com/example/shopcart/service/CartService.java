@@ -47,6 +47,11 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
+    public Cart clearCart(Cart cart) {
+        Cart cartToUpdate = cartRepository.findById(cart.getId_cart()).orElseThrow();
+        return cartRepository.save(cartToUpdate);
+    }
+
     @Transactional
     public Cart addProductToCart(Long cartId, Long productId) {
         Cart cart = cartRepository.findById(cartId).orElseThrow();

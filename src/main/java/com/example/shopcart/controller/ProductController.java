@@ -23,8 +23,10 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping()
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
-        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        return new ResponseEntity<>(productService.getAllProducts().stream().map(ProductDTO::from).toList(),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{productId}")
@@ -34,24 +36,25 @@ public class ProductController {
     }
 
     @PostMapping()
-    public Product createProduct(@RequestBody ProductCreateDTO productDto) {
-        Product product = new Product();
-        product.setName(productDto.name());
-        product.setPrice(productDto.price());
-        return productService.createProduct(product);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Product createProduct(@Validated @RequestBody ProductCreateDTO productDto) {
+        return productService.createProduct(
+                Product.builder()
+                        .name(productDto.name())
+                        .price(productDto.price())
+                        .build());
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<ProductResponseDTO> deleteProduct(@PathVariable Long productId) {
-        return productService.deleteProduct(productId) ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ProductResponseDTO> updateProduct(@Validated @RequestBody ProductUpdateDTO updateProductDto) {
-        return productService.updateProduct(updateProductDto)
-                .map(product -> new ResponseEntity<>(new ProductResponseDTO(product), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        productService.updateProduct(updateProductDto.getId_product(), updateProductDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

@@ -1,42 +1,28 @@
 package com.example.shopcart.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.example.shopcart.enums.OrderStatus;
 import com.example.shopcart.models.Cart;
 import com.example.shopcart.models.Product;
-import com.example.shopcart.models.dto.CartDTO;
-import com.example.shopcart.models.dto.CartResponseDTO;
-import com.example.shopcart.models.dto.ProductUpdateDTO;
 import com.example.shopcart.repository.CartRepository;
 import com.example.shopcart.repository.ProductRepository;
-import jakarta.transaction.Transactional;
-import org.apache.velocity.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class CartService {
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final ProductService productService;
 
-    @Autowired
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, ProductService productService) {
-        this.cartRepository = cartRepository;
-        this.productRepository = productRepository;
-        this.productService = productService;
-    }
-
     public List<Cart> getAllCarts() {
-        return StreamSupport
-                .stream(cartRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+        return cartRepository.findAll();
     }
 
     public Cart getSingleCart(Long cartId) {

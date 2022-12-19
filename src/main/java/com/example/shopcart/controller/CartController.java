@@ -2,21 +2,16 @@ package com.example.shopcart.controller;
 
 import com.example.shopcart.enums.OrderStatus;
 import com.example.shopcart.models.Cart;
-import com.example.shopcart.models.Product;
 import com.example.shopcart.models.dto.CartDTO;
 import com.example.shopcart.models.dto.CartResponseDTO;
-import com.example.shopcart.models.dto.ProductResponseDTO;
-import com.example.shopcart.models.dto.ProductUpdateDTO;
 import com.example.shopcart.service.CartService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/carts")
@@ -27,9 +22,7 @@ public class CartController {
 
     @GetMapping()
     public ResponseEntity<List<CartDTO>> getAllCarts() {
-        List<Cart> carts = cartService.getAllCarts();
-        List<CartDTO> cartsDto = carts.stream().map(CartDTO::mapFrom).collect(Collectors.toList());
-        return new ResponseEntity<>(cartsDto, HttpStatus.OK);
+        return new ResponseEntity<>(cartService.getAllCarts().stream().map(CartDTO::mapFrom).toList(), HttpStatus.OK);
     }
 
     @GetMapping("/{cartId}")
@@ -55,7 +48,7 @@ public class CartController {
 
     @DeleteMapping("/{cartId}/delete-product/{productId}")
     public ResponseEntity<CartDTO> deleteProductFromCart(@PathVariable final Long cartId,
-                                                    @PathVariable final Long productId) {
+            @PathVariable final Long productId) {
         Cart cart = cartService.deleteProductFromCart(cartId, productId);
         return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
     }

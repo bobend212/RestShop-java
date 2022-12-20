@@ -12,13 +12,13 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_product;
+    private Long id;
 
     private String name;
 
     private Float price;
 
     @ManyToOne
-    @JoinColumn(name = "id_cart")
+    @JoinColumn(name = "cart_id")
     Cart cart;
 }

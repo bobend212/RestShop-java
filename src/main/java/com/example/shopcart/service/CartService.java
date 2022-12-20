@@ -34,7 +34,7 @@ public class CartService {
     }
 
     public Cart clearCart(Cart cart) {
-        Cart cartToUpdate = cartRepository.findById(cart.getId_cart()).orElseThrow();
+        Cart cartToUpdate = cartRepository.findById(cart.getId()).orElseThrow();
         return cartRepository.save(cartToUpdate);
     }
 
@@ -43,7 +43,7 @@ public class CartService {
         Cart cart = cartRepository.findById(cartId).orElseThrow();
         Product product = productRepository.findById(productId).orElseThrow();
 
-        cart.setTotal_price(product.getPrice());
+        cart.setTotalPrice(product.getPrice());
         cart.setOrder_status(OrderStatus.IN_PROGRESS);
         cart.addProduct(product);
         product.setCart(cart);

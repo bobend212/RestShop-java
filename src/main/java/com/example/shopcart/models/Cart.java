@@ -19,11 +19,12 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_cart;
+    @Column(name = "cart_id")
+    private Long id;
 
     private OrderStatus order_status;
 
-    private Float total_price;
+    private Float totalPrice;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();;
@@ -38,8 +39,8 @@ public class Cart {
 
     public static Cart mapFrom(CartDTO cartDto) {
         Cart cart = new Cart();
-        cart.setId_cart(cartDto.getId_cart());
-        cart.setOrder_status(cartDto.getOrder_status());
+        cart.setId(cartDto.getId());
+        cart.setOrder_status(cartDto.getOrderStatus());
         // cart.setProducts(cartDto.getProductsDto().stream().map(ProductDTO::from).collect(Collectors.toList()));
         // cart.setTotal_price(sumPrice(cart.getProducts()));
         return cart;

@@ -13,17 +13,17 @@ import lombok.Data;
 @Data
 public class CartDTO {
 
-    private Long id_cart;
-    private OrderStatus order_status;
-    private Float total_price;
-    private List<ProductDTO> productsDto = new ArrayList<>();
+    private Long id;
+    private OrderStatus orderStatus;
+    private Float totalPrice;
+    private List<ProductDTO> products = new ArrayList<>();
 
     public static CartDTO mapFrom(Cart cart) {
         CartDTO cartDto = new CartDTO();
-        cartDto.setId_cart(cart.getId_cart());
-        cartDto.setOrder_status(cart.getOrder_status());
-        cartDto.setProductsDto(cart.getProducts().stream().map(ProductDTO::from).collect(Collectors.toList()));
-        cartDto.setTotal_price(sumPrice(cart.getProducts()));
+        cartDto.setId(cart.getId());
+        cartDto.setOrderStatus(cart.getOrder_status());
+        cartDto.setProducts(cart.getProducts().stream().map(ProductDTO::from).collect(Collectors.toList()));
+        cartDto.setTotalPrice(sumPrice(cart.getProducts()));
         return cartDto;
     }
 

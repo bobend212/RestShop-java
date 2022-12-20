@@ -33,10 +33,11 @@ public class CartController {
 
     @PostMapping()
     public Cart createCart() {
-        Cart cart = new Cart();
-        cart.setOrder_status(OrderStatus.EMPTY);
-        cart.setTotal_price(0f);
-        return cartService.createCart(cart);
+        return cartService.createCart(
+                Cart.builder()
+                        .order_status(OrderStatus.EMPTY)
+                        .totalPrice(0f)
+                        .build());
     }
 
     @PostMapping("/{cartId}/add-product/{productId}")
@@ -62,9 +63,9 @@ public class CartController {
     @PutMapping("/clear")
     public Cart clearCart(@RequestBody Cart cart) {
         Cart newCart = new Cart();
-        newCart.setId_cart(cart.getId_cart());
+        newCart.setId(cart.getId());
         newCart.setOrder_status(cart.getOrder_status());
-        newCart.setTotal_price(cart.getTotal_price());
+        newCart.setTotalPrice(cart.getTotalPrice());
         newCart.setProducts(cart.getProducts());
         return cartService.clearCart(newCart);
     }

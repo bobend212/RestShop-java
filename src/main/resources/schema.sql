@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS productData;
+//DROP TABLE IF EXISTS productData;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS cart;
 
@@ -19,9 +19,9 @@ CREATE TABLE product (
 
 ALTER TABLE product ADD CONSTRAINT FK_PRODUCT_ON_CART_ID FOREIGN KEY (cart_id) REFERENCES cart (cart_id);
 
-CREATE TABLE productData (
-  id BIGINT NOT NULL AUTO_INCREMENT,
-   name VARCHAR(255),
-   price FLOAT,
-   PRIMARY KEY (id)
-);
+-- CREATE TABLE productData (
+--   id BIGINT NOT NULL AUTO_INCREMENT,
+--    name VARCHAR(255),
+--    price FLOAT,
+--    PRIMARY KEY (id)
+-- );

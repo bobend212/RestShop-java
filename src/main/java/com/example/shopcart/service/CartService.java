@@ -11,7 +11,6 @@ import com.example.shopcart.models.Product;
 import com.example.shopcart.repository.CartRepository;
 import com.example.shopcart.repository.ProductRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -20,7 +19,6 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
-    private final ProductService productService;
 
     public List<Cart> getAllCarts() {
         return cartRepository.findAll();
@@ -44,6 +42,7 @@ public class CartService {
     public Boolean clearCart(Long cartId) {
         return cartRepository.findById(cartId).map(cartToUpdate -> {
             deleteAllProductsByCardId(cartToUpdate.getId());
+            cartToUpdate.setOrderStatus(OrderStatus.EMPTY);
             cartRepository.save(cartToUpdate);
             return true;
         }).orElse(false);
@@ -59,25 +58,25 @@ public class CartService {
         productRepository.deleteAllById(ids);
     }
 
-    @Transactional
-    public Cart addProductToCart(Long cartId, Long productId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow();
-        Product product = productRepository.findById(productId).orElseThrow();
+    // @Transactional
+    // public Cart addProductToCart(Long cartId, Long productId) {
+    // Cart cart = cartRepository.findById(cartId).orElseThrow();
+    // Product product = productRepository.findById(productId).orElseThrow();
 
-        cart.setTotalPrice(product.getPrice());
-        cart.setOrder_status(OrderStatus.IN_PROGRESS);
-        cart.addProduct(product);
-        product.setCart(cart);
-        return cart;
-    }
+    // cart.setTotalPrice(product.getPrice());
+    // cart.setOrder_status(OrderStatus.IN_PROGRESS);
+    // cart.addProduct(product);
+    // product.setCart(cart);
+    // return cart;
+    // }
 
-    @Transactional
-    public Cart deleteProductFromCart(Long cartId, Long productId) {
-        Cart cart = getSingleCart(cartId);
-        Product product = productService.getSingleProduct(productId);
-        cart.deleteProduct(product);
-        product.setCart(null);
-        return cart;
-    }
+    // @Transactional
+    // public Cart deleteProductFromCart(Long cartId, Long productId) {
+    // Cart cart = getSingleCart(cartId);
+    // Product product = productService.getSingleProduct(productId);
+    // cart.deleteProduct(product);
+    // product.setCart(null);
+    // return cart;
+    // }
 
 }

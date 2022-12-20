@@ -19,7 +19,7 @@ public class CartResponseDTO {
 
     public CartResponseDTO(Cart cart) {
         this.id = cart.getId();
-        this.orderStatus = cart.getOrder_status();
+        this.orderStatus = cart.getOrderStatus();
         this.totalPrice = cart.getTotalPrice();
     }
 }

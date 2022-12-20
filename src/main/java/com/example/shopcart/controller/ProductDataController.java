@@ -2,44 +2,45 @@ package com.example.shopcart.controller;
 
 import java.util.List;
 
-import com.example.shopcart.models.dto.ProductDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.shopcart.models.Product;
+import com.example.shopcart.models.ProductData;
 import com.example.shopcart.models.dto.ProductCreateDTO;
 import com.example.shopcart.models.dto.ProductResponseDTO;
 import com.example.shopcart.models.dto.ProductUpdateDTO;
-import com.example.shopcart.service.ProductService;
+import com.example.shopcart.service.ProductDataService;
 
 @RestController
 @RequestMapping("/products")
-public class ProductController {
+public class ProductDataController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductDataService productDataService;
+
+    public ProductDataController(ProductDataService productDataService) {
+        this.productDataService = productDataService;
+    }
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        return new ResponseEntity<>(productService.getAllProducts().stream().map(ProductDTO::from).toList(),
+    public ResponseEntity<List<ProductData>> getAllProducts() {
+        return new ResponseEntity<>(productDataService.getAllProducts(),
                 HttpStatus.OK);
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductDTO> getSingleProduct(@PathVariable Long productId) {
-        Product product = productService.getSingleProduct(productId);
-        return new ResponseEntity<>(ProductDTO.from(product), HttpStatus.OK);
+    public ResponseEntity<ProductData> getSingleProduct(@PathVariable Long productId) {
+        ProductData productData = productDataService.getSingleProduct(productId);
+        return new ResponseEntity<>(productData, HttpStatus.OK);
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Product createProduct(@Validated @RequestBody ProductCreateDTO productDto) {
-        return productService.createProduct(
-                Product.builder()
+    public ProductData createProduct(@Validated @RequestBody ProductCreateDTO productDto) {
+        return productDataService.createProduct(
+                ProductData.builder()
                         .name(productDto.name())
                         .price(productDto.price())
                         .build());
@@ -47,13 +48,13 @@ public class ProductController {
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
-        productService.deleteProduct(productId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return productDataService.deleteProduct(productId) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ProductResponseDTO> updateProduct(@Validated @RequestBody ProductUpdateDTO updateProductDto) {
-        productService.updateProduct(updateProductDto.getId(), updateProductDto);
+        productDataService.updateProduct(updateProductDto.getId(), updateProductDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -2,32 +2,23 @@ package com.example.shopcart.controller;
 
 import com.example.shopcart.common.OrderStatus;
 import com.example.shopcart.models.Cart;
-import com.example.shopcart.models.Product;
 import com.example.shopcart.models.dto.CartDTO;
-import com.example.shopcart.models.dto.CartResponseDTO;
-import com.example.shopcart.models.dto.ProductDTO;
 import com.example.shopcart.service.CartService;
-import com.example.shopcart.service.ProductService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/carts")
 public class CartController {
 
     private final CartService cartService;
-    private final ProductService productService;
 
-    public CartController(CartService cartService, ProductService productService) {
+    public CartController(CartService cartService) {
         this.cartService = cartService;
-        this.productService = productService;
     }
 
     @GetMapping()
@@ -38,9 +29,9 @@ public class CartController {
 
     @GetMapping("/{cartId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Cart> getSingleCart(@PathVariable Long cartId) {
+    public ResponseEntity<CartDTO> getSingleCart(@PathVariable Long cartId) {
         Cart cart = cartService.getSingleCart(cartId);
-        return new ResponseEntity<>(cart, HttpStatus.OK);
+        return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
     }
 
     @PostMapping()
@@ -48,7 +39,7 @@ public class CartController {
     public ResponseEntity<Cart> createEmptyCart() {
         return new ResponseEntity<>(cartService.createEmptyCart(
                 Cart.builder()
-                        .order_status(OrderStatus.EMPTY)
+                        .orderStatus(OrderStatus.EMPTY)
                         .totalPrice(0f)
                         .build()),
                 HttpStatus.CREATED);
@@ -64,11 +55,7 @@ public class CartController {
     @PutMapping("/{cartId}/clear")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Cart> clearCart(@PathVariable Long cartId) {
-        return cartService.clearCart(cartId) ? new ResponseEntity<>(Cart.builder()
-                .order_status(OrderStatus.EMPTY)
-                .id(cartId)
-                .order_status(OrderStatus.EMPTY)
-                .build(), HttpStatus.OK)
+        return cartService.clearCart(cartId) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

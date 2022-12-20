@@ -21,7 +21,7 @@ public class CartDTO {
     public static CartDTO mapFrom(Cart cart) {
         CartDTO cartDto = new CartDTO();
         cartDto.setId(cart.getId());
-        cartDto.setOrderStatus(cart.getOrder_status());
+        cartDto.setOrderStatus(cart.getOrderStatus());
         cartDto.setProducts(cart.getProducts().stream().map(ProductDTO::from).collect(Collectors.toList()));
         cartDto.setTotalPrice(sumPrice(cart.getProducts()));
         return cartDto;

@@ -6,7 +6,6 @@ import lombok.*;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Table
@@ -22,7 +21,7 @@ public class Cart {
     @Column(name = "cart_id")
     private Long id;
 
-    private OrderStatus order_status;
+    private OrderStatus orderStatus;
 
     private Float totalPrice;
 
@@ -40,9 +39,7 @@ public class Cart {
     public static Cart mapFrom(CartDTO cartDto) {
         Cart cart = new Cart();
         cart.setId(cartDto.getId());
-        cart.setOrder_status(cartDto.getOrderStatus());
-        // cart.setProducts(cartDto.getProductsDto().stream().map(ProductDTO::from).collect(Collectors.toList()));
-        // cart.setTotal_price(sumPrice(cart.getProducts()));
+        cart.setOrderStatus(cartDto.getOrderStatus());
         return cart;
     }
 }

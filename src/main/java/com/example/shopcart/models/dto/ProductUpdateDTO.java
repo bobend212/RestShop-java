@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductUpdateDTO {
-    private Long id_product;
+    private Long id;
     private String name;
     private Float price;
 }

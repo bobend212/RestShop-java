@@ -11,15 +11,15 @@ import lombok.*;
 @NoArgsConstructor
 public class CartResponseDTO {
 
-    private Long id_cart;
+    private Long id;
 
-    private OrderStatus order_status;
+    private OrderStatus orderStatus;
 
-    private Float total_price;
+    private Float totalPrice;
 
     public CartResponseDTO(Cart cart) {
-        this.id_cart = cart.getId_cart();
-        this.order_status = cart.getOrder_status();
-        this.total_price = cart.getTotal_price();
+        this.id = cart.getId();
+        this.orderStatus = cart.getOrder_status();
+        this.totalPrice = cart.getTotalPrice();
     }
 }

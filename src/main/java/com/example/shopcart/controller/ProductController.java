@@ -53,7 +53,7 @@ public class ProductController {
 
     @PutMapping("/update")
     public ResponseEntity<ProductResponseDTO> updateProduct(@Validated @RequestBody ProductUpdateDTO updateProductDto) {
-        productService.updateProduct(updateProductDto.getId_product(), updateProductDto);
+        productService.updateProduct(updateProductDto.getId(), updateProductDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

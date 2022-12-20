@@ -3,21 +3,21 @@ DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS cart;
 
 CREATE TABLE cart (
-  id_cart BIGINT AUTO_INCREMENT NOT NULL,
+  cart_id BIGINT AUTO_INCREMENT NOT NULL,
    order_status INT,
    total_price FLOAT,
-   CONSTRAINT pk_cart PRIMARY KEY (id_cart)
+   CONSTRAINT pk_cart PRIMARY KEY (cart_id)
 );
 
 CREATE TABLE product (
-  id_product BIGINT AUTO_INCREMENT NOT NULL,
+  id BIGINT AUTO_INCREMENT NOT NULL,
    name VARCHAR(255),
    price FLOAT,
-   id_cart BIGINT,
-   CONSTRAINT pk_product PRIMARY KEY (id_product)
+   cart_id BIGINT,
+   CONSTRAINT pk_product PRIMARY KEY (id)
 );
 
-ALTER TABLE product ADD CONSTRAINT FK_PRODUCT_ON_ID_CART FOREIGN KEY (id_cart) REFERENCES cart (id_cart);
+ALTER TABLE product ADD CONSTRAINT FK_PRODUCT_ON_CART_ID FOREIGN KEY (cart_id) REFERENCES cart (cart_id);
 
 CREATE TABLE productData (
   id BIGINT NOT NULL AUTO_INCREMENT,

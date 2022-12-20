@@ -9,14 +9,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductResponseDTO {
-    private Long id_product;
+    private Long id;
 
     private String name;
 
     private Float price;
 
     public ProductResponseDTO(Product product) {
-        this.id_product = product.getId_product();
+        this.id = product.getId();
         this.name = product.getName();
         this.price = product.getPrice();
     }

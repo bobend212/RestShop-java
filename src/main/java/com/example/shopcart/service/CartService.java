@@ -1,5 +1,6 @@
 package com.example.shopcart.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -29,13 +30,33 @@ public class CartService {
         return cartRepository.findById(cartId).orElseThrow();
     }
 
-    public Cart createCart(Cart cart) {
+    public Cart createEmptyCart(Cart cart) {
         return cartRepository.save(cart);
     }
 
-    public Cart clearCart(Cart cart) {
-        Cart cartToUpdate = cartRepository.findById(cart.getId()).orElseThrow();
-        return cartRepository.save(cartToUpdate);
+    public Boolean deleteCart(Long cartId) {
+        return cartRepository.findById(cartId).map(cart -> {
+            cartRepository.delete(cart);
+            return true;
+        }).orElse(false);
+    }
+
+    public Boolean clearCart(Long cartId) {
+        return cartRepository.findById(cartId).map(cartToUpdate -> {
+            deleteAllProductsByCardId(cartToUpdate.getId());
+            cartRepository.save(cartToUpdate);
+            return true;
+        }).orElse(false);
+
+    }
+
+    private void deleteAllProductsByCardId(Long cardId) {
+        var findProducts = productRepository.findAll().stream().filter(x -> x.getCart().getId() == cardId).toList();
+        List<Long> ids = new ArrayList<Long>();
+        for (Product product : findProducts) {
+            ids.add(product.getId());
+        }
+        productRepository.deleteAllById(ids);
     }
 
     @Transactional
@@ -59,10 +80,4 @@ public class CartService {
         return cart;
     }
 
-    public boolean deleteCart(Long cartId) {
-        return cartRepository.findById(cartId).map(cart -> {
-            cartRepository.delete(cart);
-            return true;
-        }).orElse(false);
-    }
 }

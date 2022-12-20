@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.shopcart.enums.OrderStatus;
+import com.example.shopcart.common.OrderStatus;
 import com.example.shopcart.models.Cart;
 import com.example.shopcart.models.Product;
 import com.example.shopcart.repository.CartRepository;

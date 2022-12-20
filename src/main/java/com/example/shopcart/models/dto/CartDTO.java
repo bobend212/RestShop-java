@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.example.shopcart.enums.OrderStatus;
+import com.example.shopcart.common.OrderStatus;
 import com.example.shopcart.models.Cart;
 import com.example.shopcart.models.Product;
 

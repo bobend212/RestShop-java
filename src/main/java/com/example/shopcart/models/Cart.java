@@ -1,5 +1,6 @@
 package com.example.shopcart.models;
 
+import com.example.shopcart.common.OrderStatus;
 import com.example.shopcart.models.dto.CartDTO;
 import lombok.*;
 
@@ -7,7 +8,6 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.example.shopcart.enums.OrderStatus;
 
 @Table
 @Entity

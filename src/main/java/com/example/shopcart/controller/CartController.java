@@ -1,6 +1,6 @@
 package com.example.shopcart.controller;
 
-import com.example.shopcart.enums.OrderStatus;
+import com.example.shopcart.common.OrderStatus;
 import com.example.shopcart.models.Cart;
 import com.example.shopcart.models.dto.CartDTO;
 import com.example.shopcart.models.dto.CartResponseDTO;

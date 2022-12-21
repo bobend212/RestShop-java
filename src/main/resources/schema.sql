@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS cart;
 
 CREATE TABLE cart (
   cart_id BIGINT AUTO_INCREMENT NOT NULL,
-   order_status VARCHAR(50),
+   order_status VARCHAR(255) NOT NULL,
    total_price FLOAT,
    CONSTRAINT pk_cart PRIMARY KEY (cart_id)
 );

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.shopcart.common.OrderStatus;
 import com.example.shopcart.models.Cart;
-import com.example.shopcart.models.Product;
+import com.example.shopcart.models.Item;
 import com.example.shopcart.repository.CartRepository;
-import com.example.shopcart.repository.ProductRepository;
+import com.example.shopcart.repository.ItemRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final ProductRepository productRepository;
+    private final ItemRepository productRepository;
 
     public List<Cart> getAllCarts() {
         return cartRepository.findAll();
@@ -52,7 +52,7 @@ public class CartService {
     private void deleteAllProductsByCardId(Long cardId) {
         var findProducts = productRepository.findAll().stream().filter(x -> x.getCart().getId() == cardId).toList();
         List<Long> ids = new ArrayList<Long>();
-        for (Product product : findProducts) {
+        for (Item product : findProducts) {
             ids.add(product.getId());
         }
         productRepository.deleteAllById(ids);

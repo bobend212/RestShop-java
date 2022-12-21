@@ -17,8 +17,4 @@ public class Product {
     private String name;
 
     private Float price;
-
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    Cart cart;
 }

@@ -3,27 +3,27 @@ package com.example.shopcart.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-import com.example.shopcart.models.ProductData;
+import com.example.shopcart.models.Product;
 import com.example.shopcart.models.dto.ProductUpdateDTO;
-import com.example.shopcart.repository.ProductDataRepository;
+import com.example.shopcart.repository.ProductRepository;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class ProductDataService {
+public class ProductService {
 
-    private final ProductDataRepository productDataRepository;
+    private final ProductRepository productDataRepository;
 
-    public List<ProductData> getAllProducts() {
+    public List<Product> getAllProducts() {
         return productDataRepository.findAll();
     }
 
-    public ProductData getSingleProduct(Long productId) {
+    public Product getSingleProduct(Long productId) {
         return productDataRepository.findById(productId).orElseThrow();
     }
 
-    public ProductData createProduct(ProductData product) {
+    public Product createProduct(Product product) {
         return productDataRepository.save(product);
     }
 
@@ -34,8 +34,8 @@ public class ProductDataService {
         }).orElse(false);
     }
 
-    public ProductData updateProduct(Long productId, ProductUpdateDTO productUpdateDTO) {
-        ProductData productFromDb = productDataRepository.findById(productId).get();
+    public Product updateProduct(Long productId, ProductUpdateDTO productUpdateDTO) {
+        Product productFromDb = productDataRepository.findById(productId).get();
         productFromDb.setName(productUpdateDTO.getName());
         productFromDb.setPrice(productUpdateDTO.getPrice());
         return productDataRepository.save(productFromDb);

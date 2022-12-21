@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductData {
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +17,8 @@ public class ProductData {
     private String name;
 
     private Float price;
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    Cart cart;
 }

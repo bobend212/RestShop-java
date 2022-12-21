@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.example.shopcart.common.OrderStatus;
 import com.example.shopcart.models.Cart;
-import com.example.shopcart.models.Product;
+import com.example.shopcart.models.Item;
 
 import lombok.Data;
 
@@ -27,9 +27,9 @@ public class CartDTO {
         return cartDto;
     }
 
-    private static Float sumPrice(List<Product> products) {
+    private static Float sumPrice(List<Item> products) {
         Float result = 0f;
-        for (Product product : products) {
+        for (Item product : products) {
             result += product.getPrice();
         }
         return result;

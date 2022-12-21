@@ -22,20 +22,17 @@ public class CartController {
     }
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<CartDTO>> getAllCarts() {
         return new ResponseEntity<>(cartService.getAllCarts().stream().map(CartDTO::mapFrom).toList(), HttpStatus.OK);
     }
 
     @GetMapping("/{cartId}")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CartDTO> getSingleCart(@PathVariable Long cartId) {
         Cart cart = cartService.getSingleCart(cartId);
         return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Cart> createEmptyCart() {
         return new ResponseEntity<>(cartService.createEmptyCart(
                 Cart.builder()
@@ -46,14 +43,12 @@ public class CartController {
     }
 
     @DeleteMapping("/{cartId}")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deleteCart(@PathVariable Long cartId) {
         return cartService.deleteCart(cartId) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{cartId}/clear")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Cart> clearCart(@PathVariable Long cartId) {
         return cartService.clearCart(cartId) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

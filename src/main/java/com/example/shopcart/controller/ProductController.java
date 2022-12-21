@@ -7,40 +7,39 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.shopcart.models.ProductData;
+import com.example.shopcart.models.Product;
 import com.example.shopcart.models.dto.ProductCreateDTO;
 import com.example.shopcart.models.dto.ProductResponseDTO;
 import com.example.shopcart.models.dto.ProductUpdateDTO;
-import com.example.shopcart.service.ProductDataService;
+import com.example.shopcart.service.ProductService;
 
 @RestController
 @RequestMapping("/products")
-public class ProductDataController {
+public class ProductController {
 
-    private final ProductDataService productDataService;
+    private final ProductService productDataService;
 
-    public ProductDataController(ProductDataService productDataService) {
+    public ProductController(ProductService productDataService) {
         this.productDataService = productDataService;
     }
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ProductData>> getAllProducts() {
+    public ResponseEntity<List<Product>> getAllProducts() {
         return new ResponseEntity<>(productDataService.getAllProducts(),
                 HttpStatus.OK);
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductData> getSingleProduct(@PathVariable Long productId) {
-        ProductData productData = productDataService.getSingleProduct(productId);
+    public ResponseEntity<Product> getSingleProduct(@PathVariable Long productId) {
+        Product productData = productDataService.getSingleProduct(productId);
         return new ResponseEntity<>(productData, HttpStatus.OK);
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductData createProduct(@Validated @RequestBody ProductCreateDTO productDto) {
+    public Product createProduct(@Validated @RequestBody ProductCreateDTO productDto) {
         return productDataService.createProduct(
-                ProductData.builder()
+                Product.builder()
                         .name(productDto.name())
                         .price(productDto.price())
                         .build());

@@ -26,13 +26,13 @@ public class Cart {
     private Float totalPrice;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<Product> products;
+    private List<Item> products;
 
-    public void addProduct(Product product) {
+    public void addProduct(Item product) {
         products.add(product);
     }
 
-    public void deleteProduct(Product product) {
+    public void deleteProduct(Item product) {
         products.remove(product);
     }
 

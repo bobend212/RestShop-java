@@ -1,6 +1,6 @@
 package com.example.shopcart.models.dto;
 
-import com.example.shopcart.models.Product;
+import com.example.shopcart.models.Item;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ public class ProductDTO {
     private String name;
     private Float price;
 
-    public static ProductDTO from(Product product) {
+    public static ProductDTO from(Item product) {
         ProductDTO productDto = new ProductDTO();
         productDto.setId(product.getId());
         productDto.setName(product.getName());

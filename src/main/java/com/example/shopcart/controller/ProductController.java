@@ -2,15 +2,12 @@ package com.example.shopcart.controller;
 
 import java.util.List;
 
-import com.example.shopcart.models.dto.ProductDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.shopcart.models.Product;
-import com.example.shopcart.models.dto.ProductCreateDTO;
-import com.example.shopcart.models.dto.ProductUpdateDTO;
+import com.example.shopcart.repository.Product;
 import com.example.shopcart.service.ProductService;
 
 @RestController

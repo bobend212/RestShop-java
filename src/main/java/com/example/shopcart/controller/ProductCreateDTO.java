@@ -1,4 +1,4 @@
-package com.example.shopcart.models.dto;
+package com.example.shopcart.controller;
 
 public record ProductCreateDTO(String name, Float price) {
 }

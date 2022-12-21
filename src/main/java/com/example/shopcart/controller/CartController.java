@@ -1,7 +1,6 @@
 package com.example.shopcart.controller;
 
-import com.example.shopcart.models.Cart;
-import com.example.shopcart.models.dto.CartDTO;
+import com.example.shopcart.repository.Cart;
 import com.example.shopcart.service.CartService;
 
 import org.springframework.http.HttpStatus;
@@ -22,17 +21,18 @@ public class CartController {
 
     @GetMapping()
     public ResponseEntity<List<CartDTO>> getAllCarts() {
-        return new ResponseEntity<>(cartService.getAllCarts().stream().map(CartDTO::mapToCart).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(cartService.getAllCarts().stream().map(com.example.shopcart.service.Cart::toDto).toList(),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{cartId}")
     public ResponseEntity<CartDTO> getSingleCart(@PathVariable Long cartId) {
-        Cart cart = cartService.getSingleCart(cartId);
-        return new ResponseEntity<>(CartDTO.mapToCart(cart), HttpStatus.OK);
+        com.example.shopcart.service.Cart cart = cartService.getSingleCart(cartId);
+        return new ResponseEntity<>(com.example.shopcart.service.Cart.toDto(cart), HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseEntity<Cart> createEmptyCart() {
+    public ResponseEntity<com.example.shopcart.service.Cart> createEmptyCart() {
         return new ResponseEntity<>(cartService.createEmptyCart(), HttpStatus.CREATED);
     }
 
@@ -48,18 +48,10 @@ public class CartController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-//     @PostMapping("/{cartId}/add-product/{productId}")
-//     public ResponseEntity<CartDTO> addProductToCart(@PathVariable final Long cartId, @PathVariable final Long productId) {
-//        Cart cart = cartService.addProductToCart(cartId, productId);
-//        return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
-//     }
+     @PostMapping("/{cartId}/add-products")
+     public ResponseEntity<CartDTO> addProductsToCart(@PathVariable final Long cartId) {
+        return new ResponseEntity<>(com.example.shopcart.service.Cart.toDto(cartService.addProductsToCart(cartId)),
+                HttpStatus.OK);
+     }
 
-    // @DeleteMapping("/{cartId}/delete-product/{productId}")
-    // public ResponseEntity<CartDTO> deleteProductFromCart(@PathVariable final Long
-    // cartId,
-    // @PathVariable final Long productId) {
-    // Cart cart = cartService.deleteProductFromCart(cartId, productId);
-    // return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
-    // }
-//todo: test
 }

@@ -1,6 +1,8 @@
 package com.example.shopcart.service;
 
 import java.util.List;
+
+import com.example.shopcart.models.dto.ProductCreateDTO;
 import org.springframework.stereotype.Service;
 
 import com.example.shopcart.models.Product;
@@ -13,31 +15,35 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ProductService {
 
-    private final ProductRepository productDataRepository;
+    private final ProductRepository productRepository;
 
     public List<Product> getAllProducts() {
-        return productDataRepository.findAll();
+        return productRepository.findAll();
     }
 
     public Product getSingleProduct(Long productId) {
-        return productDataRepository.findById(productId).orElseThrow();
+        return productRepository.findById(productId).orElseThrow();
     }
 
-    public Product createProduct(Product product) {
-        return productDataRepository.save(product);
+    public Product createProduct(ProductCreateDTO newProduct) {
+        return productRepository.save(Product.builder()
+                .name(newProduct.name())
+                .price(newProduct.price())
+                .build());
     }
 
     public Boolean deleteProduct(Long productId) {
-        return productDataRepository.findById(productId).map(productData -> {
-            productDataRepository.delete(productData);
+        return productRepository.findById(productId).map(product -> {
+            productRepository.delete(product);
             return true;
         }).orElse(false);
     }
 
     public Product updateProduct(Long productId, ProductUpdateDTO productUpdateDTO) {
-        Product productFromDb = productDataRepository.findById(productId).get();
-        productFromDb.setName(productUpdateDTO.getName());
-        productFromDb.setPrice(productUpdateDTO.getPrice());
-        return productDataRepository.save(productFromDb);
+        return productRepository.findById(productId).map(product -> {
+            product.setName(productUpdateDTO.getName());
+            product.setPrice(productUpdateDTO.getPrice());
+            return productRepository.save(product);
+        }).orElseThrow(() -> new RuntimeException("Product does not exist."));
     }
 }

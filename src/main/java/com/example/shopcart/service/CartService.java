@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final ItemRepository productRepository;
+    private final ItemRepository itemRepository;
 
     public List<Cart> getAllCarts() {
         return cartRepository.findAll();
@@ -26,7 +26,7 @@ public class CartService {
 
     public Cart getSingleCart(Long cartId) {
         return cartRepository.findById(cartId)
-                .orElseThrow(() -> new IllegalArgumentException("Cart does not exist."));
+                .orElseThrow(() -> new RuntimeException("Cart does not exist."));
     }
 
     public Cart createEmptyCart() {
@@ -37,7 +37,7 @@ public class CartService {
         return cartRepository.findById(cartId).map(cart -> {
             cartRepository.delete(cart);
             return true;
-        }).orElseThrow(() -> new IllegalArgumentException("Cart does not exist."));
+        }).orElseThrow(() -> new RuntimeException("Cart does not exist."));
     }
 
     public Boolean clearCart(Long cartId) {
@@ -50,8 +50,8 @@ public class CartService {
     }
 
     private void deleteAllProductsByCardId(Long cardId) {
-        productRepository.deleteAllById(
-                productRepository.findAll().stream().
+        itemRepository.deleteAllById(
+                itemRepository.findAll().stream().
                         filter(x -> Objects.equals(x.getCart().getId(), cardId))
                         .map(Item::getId).toList());
     }

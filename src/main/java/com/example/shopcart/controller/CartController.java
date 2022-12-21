@@ -23,23 +23,18 @@ public class CartController {
 
     @GetMapping()
     public ResponseEntity<List<CartDTO>> getAllCarts() {
-        return new ResponseEntity<>(cartService.getAllCarts().stream().map(CartDTO::mapFrom).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(cartService.getAllCarts().stream().map(CartDTO::mapToCart).toList(), HttpStatus.OK);
     }
 
     @GetMapping("/{cartId}")
     public ResponseEntity<CartDTO> getSingleCart(@PathVariable Long cartId) {
         Cart cart = cartService.getSingleCart(cartId);
-        return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
+        return new ResponseEntity<>(CartDTO.mapToCart(cart), HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity<Cart> createEmptyCart() {
-        return new ResponseEntity<>(cartService.createEmptyCart(
-                Cart.builder()
-                        .orderStatus(OrderStatus.EMPTY)
-                        .totalPrice(0f)
-                        .build()),
-                HttpStatus.CREATED);
+        return new ResponseEntity<>(cartService.createEmptyCart(), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{cartId}")
@@ -54,13 +49,11 @@ public class CartController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // @PostMapping("/{cartId}/add-product/{productId}")
-    // public ResponseEntity<CartDTO> addProductToCart(@PathVariable final Long
-    // cartId,
-    // @PathVariable final Long productId) {
-    // Cart cart = cartService.addProductToCart(cartId, productId);
-    // return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
-    // }
+//     @PostMapping("/{cartId}/add-product/{productId}")
+//     public ResponseEntity<CartDTO> addProductToCart(@PathVariable final Long cartId, @PathVariable final Long productId) {
+//        Cart cart = cartService.addProductToCart(cartId, productId);
+//        return new ResponseEntity<>(CartDTO.mapFrom(cart), HttpStatus.OK);
+//     }
 
     // @DeleteMapping("/{cartId}/delete-product/{productId}")
     // public ResponseEntity<CartDTO> deleteProductFromCart(@PathVariable final Long

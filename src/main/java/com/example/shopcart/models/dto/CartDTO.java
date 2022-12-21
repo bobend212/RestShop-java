@@ -1,7 +1,8 @@
 package com.example.shopcart.models.dto;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.example.shopcart.common.OrderStatus;
@@ -16,21 +17,21 @@ public class CartDTO {
     private Long id;
     private OrderStatus orderStatus;
     private Float totalPrice;
-    private List<ProductDTO> products = new ArrayList<>();
+    private Set<ProductDTO> items = new HashSet<>();
 
-    public static CartDTO mapFrom(Cart cart) {
+    public static CartDTO mapToCart(Cart cart) {
         CartDTO cartDto = new CartDTO();
         cartDto.setId(cart.getId());
         cartDto.setOrderStatus(cart.getOrderStatus());
-        cartDto.setProducts(cart.getProducts().stream().map(ProductDTO::from).collect(Collectors.toList()));
-        cartDto.setTotalPrice(sumPrice(cart.getProducts()));
+        cartDto.setItems(cart.getItems().stream().map(ProductDTO::from).collect(Collectors.toSet()));
+        cartDto.setTotalPrice(sumPrice(cart.getItems()));
         return cartDto;
     }
 
     private static Float sumPrice(List<Item> products) {
         Float result = 0f;
         for (Item product : products) {
-            result += product.getPrice();
+            result += product.getProduct().getPrice();
         }
         return result;
     }

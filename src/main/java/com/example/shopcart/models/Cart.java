@@ -21,19 +21,18 @@ public class Cart {
     @Column(name = "cart_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    private Float totalPrice;
-
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<Item> products;
+    private List<Item> items;
 
     public void addProduct(Item product) {
-        products.add(product);
+        items.add(product);
     }
 
     public void deleteProduct(Item product) {
-        products.remove(product);
+        items.remove(product);
     }
 
     public static Cart mapFrom(CartDTO cartDto) {

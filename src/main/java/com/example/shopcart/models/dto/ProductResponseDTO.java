@@ -11,13 +11,10 @@ import lombok.*;
 public class ProductResponseDTO {
     private Long id;
 
-    private String name;
-
-    private Float price;
+    private Long productId;
 
     public ProductResponseDTO(Item product) {
         this.id = product.getId();
-        this.name = product.getName();
-        this.price = product.getPrice();
+        this.productId = product.getProduct().getId();
     }
 }

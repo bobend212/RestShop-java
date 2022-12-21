@@ -14,9 +14,10 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    private Float price;
+    //private Long productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    Product product;
 
     @ManyToOne
     @JoinColumn(name = "cart_id")

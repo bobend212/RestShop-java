@@ -1,7 +1,7 @@
 package com.example.shopcart.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
@@ -25,50 +25,48 @@ public class CartService {
     }
 
     public Cart getSingleCart(Long cartId) {
-        return cartRepository.findById(cartId).orElseThrow();
+        return cartRepository.findById(cartId)
+                .orElseThrow(() -> new IllegalArgumentException("Cart does not exist."));
     }
 
-    public Cart createEmptyCart(Cart cart) {
-        return cartRepository.save(cart);
+    public Cart createEmptyCart() {
+        return cartRepository.save(Cart.builder().orderStatus(OrderStatus.EMPTY).build());
     }
 
     public Boolean deleteCart(Long cartId) {
         return cartRepository.findById(cartId).map(cart -> {
             cartRepository.delete(cart);
             return true;
-        }).orElse(false);
+        }).orElseThrow(() -> new IllegalArgumentException("Cart does not exist."));
     }
 
     public Boolean clearCart(Long cartId) {
         return cartRepository.findById(cartId).map(cartToUpdate -> {
             deleteAllProductsByCardId(cartToUpdate.getId());
             cartToUpdate.setOrderStatus(OrderStatus.EMPTY);
-            cartRepository.save(cartToUpdate);
             return true;
         }).orElse(false);
 
     }
 
     private void deleteAllProductsByCardId(Long cardId) {
-        var findProducts = productRepository.findAll().stream().filter(x -> x.getCart().getId() == cardId).toList();
-        List<Long> ids = new ArrayList<Long>();
-        for (Item product : findProducts) {
-            ids.add(product.getId());
-        }
-        productRepository.deleteAllById(ids);
+        productRepository.deleteAllById(
+                productRepository.findAll().stream().
+                        filter(x -> Objects.equals(x.getCart().getId(), cardId))
+                        .map(Item::getId).toList());
     }
 
-    // @Transactional
-    // public Cart addProductToCart(Long cartId, Long productId) {
-    // Cart cart = cartRepository.findById(cartId).orElseThrow();
-    // Product product = productRepository.findById(productId).orElseThrow();
-
-    // cart.setTotalPrice(product.getPrice());
-    // cart.setOrder_status(OrderStatus.IN_PROGRESS);
-    // cart.addProduct(product);
-    // product.setCart(cart);
-    // return cart;
-    // }
+//    @Transactional
+//    public Cart addProductToCart(Long cartId, List<Long> productIds) {
+//        Cart cart = cartRepository.findById(cartId).orElseThrow();
+//        Product product = productRepository.findById(productId).orElseThrow();
+//
+//        cart.setTotalPrice(product.getPrice());
+//        cart.setOrder_status(OrderStatus.PENDING);
+//        cart.addProduct(product);
+//        product.setCart(cart);
+//        return cart;
+//    }
 
     // @Transactional
     // public Cart deleteProductFromCart(Long cartId, Long productId) {

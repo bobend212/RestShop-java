@@ -23,7 +23,7 @@ public class Cart {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Item> itemEntities;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<Item> items;
 
 }

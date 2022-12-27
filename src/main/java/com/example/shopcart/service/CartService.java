@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,6 +31,7 @@ public class CartService {
     public com.example.shopcart.service.Cart createEmptyCart() {
         return com.example.shopcart.service.Cart.of(cartRepository.save(
                 Cart.builder()
+                        .items(Collections.emptyList())
                         .orderStatus(OrderStatus.EMPTY)
                         .build()));
     }
@@ -38,24 +40,18 @@ public class CartService {
         return cartRepository.findById(cartId).map(cart -> {
             cartRepository.delete(cart);
             return true;
-        }).orElseThrow(() -> new RuntimeException("Cart does not exist."));
+        }).orElse(false);
     }
 
     public Boolean clearCart(Long cartId) {
         return cartRepository.findById(cartId).map(cartToUpdate -> {
-            itemRepository.deleteAll(cartToUpdate.getItemEntities());
+            itemRepository.deleteAllInBatch(cartToUpdate.getItems());
             cartToUpdate.setOrderStatus(OrderStatus.EMPTY);
+            cartRepository.save(cartToUpdate);
             return true;
         }).orElse(false);
 
     }
-
-//    private void deleteAllProductsByCardId(Long cardId) {
-//        itemRepository.deleteAllById(
-//                itemRepository.findAll().stream().
-//                        filter(x -> Objects.equals(x.get().getId(), cardId))
-//                        .map(ItemEntity::getId).toList());
-//    }
 
     @Transactional
     public com.example.shopcart.service.Cart addProductsToCart(Long cartId) {

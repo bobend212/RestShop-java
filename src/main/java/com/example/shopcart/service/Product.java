@@ -3,6 +3,7 @@ package com.example.shopcart.service;
 import lombok.*;
 
 @Getter
+@Setter
 @Builder
 public class Product {
     private Long id;

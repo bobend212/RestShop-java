@@ -32,8 +32,9 @@ public class CartController {
     }
 
     @PostMapping()
-    public ResponseEntity<com.example.shopcart.service.Cart> createEmptyCart() {
-        return new ResponseEntity<>(cartService.createEmptyCart(), HttpStatus.CREATED);
+    public ResponseEntity<CartDTO> createEmptyCart() {
+        var newCart = cartService.createEmptyCart();
+        return new ResponseEntity<>(com.example.shopcart.service.Cart.toDto(newCart), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{cartId}")
@@ -48,6 +49,7 @@ public class CartController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    //todo: Add products to cart.
      @PostMapping("/{cartId}/add-products")
      public ResponseEntity<CartDTO> addProductsToCart(@PathVariable final Long cartId) {
         return new ResponseEntity<>(com.example.shopcart.service.Cart.toDto(cartService.addProductsToCart(cartId)),

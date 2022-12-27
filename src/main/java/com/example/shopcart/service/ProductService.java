@@ -5,7 +5,6 @@ import java.util.List;
 import com.example.shopcart.controller.ProductCreateDTO;
 import org.springframework.stereotype.Service;
 
-import com.example.shopcart.repository.Product;
 import com.example.shopcart.controller.ProductUpdateDTO;
 import com.example.shopcart.repository.ProductRepository;
 
@@ -17,19 +16,21 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<com.example.shopcart.service.Product> getAllProducts() {
+        return productRepository.findAll().stream().map(com.example.shopcart.service.Product::of).toList();
     }
 
-    public Product getSingleProduct(Long productId) {
-        return productRepository.findById(productId).orElseThrow();
+    public com.example.shopcart.service.Product getSingleProduct(Long productId) {
+        return productRepository.findById(productId).map(com.example.shopcart.service.Product::of)
+                .orElseThrow(() -> new RuntimeException("Product does not exist."));
     }
 
-    public Product createProduct(ProductCreateDTO newProduct) {
-        return productRepository.save(Product.builder()
-                .name(newProduct.name())
-                .price(newProduct.price())
-                .build());
+    public com.example.shopcart.service.Product createProduct(ProductCreateDTO newProduct) {
+        return com.example.shopcart.service.Product.of(productRepository.save(
+                com.example.shopcart.repository.Product.builder()
+                        .name(newProduct.name())
+                        .price(newProduct.price())
+                        .build()));
     }
 
     public Boolean deleteProduct(Long productId) {
@@ -39,6 +40,7 @@ public class ProductService {
         }).orElse(false);
     }
 
+    //todo: Fix updateProduct
     public Product updateProduct(Long productId, ProductUpdateDTO productUpdateDTO) {
         return productRepository.findById(productId).map(productEntity -> {
             productEntity.setName(productUpdateDTO.getName());

@@ -15,3 +15,7 @@ INSERT INTO ITEM (product_id, cart_id) VALUES(3, 1);
 INSERT INTO ITEM (product_id, cart_id) VALUES(3, 2);
 INSERT INTO ITEM (product_id, cart_id) VALUES(4, 2);
 
+--INSERT INTO ITEM (product_id) VALUES(1);
+--INSERT INTO ITEM (product_id) VALUES(3);
+--INSERT INTO ITEM (product_id) VALUES(3);
+--INSERT INTO ITEM (product_id) VALUES(4);

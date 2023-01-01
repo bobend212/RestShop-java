@@ -11,7 +11,8 @@ public class Product {
     private Float price;
 
     static Product of(com.example.shopcart.repository.Product product) {
-        return com.example.shopcart.service.Product.builder()
+        return Product.builder()
+                .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
                 .build();

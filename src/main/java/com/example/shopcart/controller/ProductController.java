@@ -2,12 +2,12 @@ package com.example.shopcart.controller;
 
 import java.util.List;
 
+import com.example.shopcart.service.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.shopcart.repository.Product;
 import com.example.shopcart.service.ProductService;
 
 @RestController
@@ -44,11 +44,11 @@ public class ProductController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{productId}/update")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,
-                                                    @RequestBody ProductUpdateDTO updateProductBody) {
-        productService.updateProduct(productId, updateProductBody);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @PutMapping("/{productId}/update")
+//    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,
+//                                                    @RequestBody ProductUpdateDTO updateProductBody) {
+//        productService.updateProduct(productId, updateProductBody);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
 }

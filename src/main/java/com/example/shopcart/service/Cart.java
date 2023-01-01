@@ -37,7 +37,7 @@ public class Cart {
     private static Float sumPrice(List<Item> products) {
         Float result = 0f;
         for (var product : products) {
-            result += product.getProduct().getPrice();
+                result += product.getProduct().getPrice();
         }
         return result;
     }

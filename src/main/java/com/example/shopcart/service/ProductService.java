@@ -41,11 +41,11 @@ public class ProductService {
     }
 
     //todo: Fix updateProduct
-    public Product updateProduct(Long productId, ProductUpdateDTO productUpdateDTO) {
-        return productRepository.findById(productId).map(productEntity -> {
-            productEntity.setName(productUpdateDTO.getName());
-            productEntity.setPrice(productUpdateDTO.getPrice());
-            return productRepository.save(productEntity);
-        }).orElseThrow(() -> new RuntimeException("Product does not exist."));
-    }
+//    public Product updateProduct(Long productId, ProductUpdateDTO productUpdateDTO) {
+//        return productRepository.findById(productId).map(productEntity -> {
+//            productEntity.setName(productUpdateDTO.getName());
+//            productEntity.setPrice(productUpdateDTO.getPrice());
+//            return productRepository.save(productEntity);
+//        }).orElseThrow(() -> new RuntimeException("Product does not exist."));
+//    }
 }

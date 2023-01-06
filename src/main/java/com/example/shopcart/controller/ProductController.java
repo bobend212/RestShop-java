@@ -44,11 +44,11 @@ public class ProductController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-//    @PutMapping("/{productId}/update")
-//    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,
-//                                                    @RequestBody ProductUpdateDTO updateProductBody) {
-//        productService.updateProduct(productId, updateProductBody);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @PutMapping("/{productId}/update")
+    public ResponseEntity<Void> updateProduct(@PathVariable Long productId,
+                                                    @RequestBody ProductUpdateDTO updateProductBody) {
+        return productService.updateProduct(productId, updateProductBody) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
 }

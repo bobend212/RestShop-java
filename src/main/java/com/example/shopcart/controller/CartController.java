@@ -1,5 +1,6 @@
 package com.example.shopcart.controller;
 
+import com.example.shopcart.exception.ApiRequestException;
 import com.example.shopcart.repository.Cart;
 import com.example.shopcart.service.CartService;
 
@@ -21,8 +22,8 @@ public class CartController {
 
     @GetMapping()
     public ResponseEntity<List<CartDTO>> getAllCarts() {
-        return new ResponseEntity<>(cartService.getAllCarts().stream().map(com.example.shopcart.service.Cart::toDto).toList(),
-                HttpStatus.OK);
+        return new ResponseEntity<>(cartService.getAllCarts().stream().map(com.example.shopcart.service.Cart::toDto)
+                .toList(), HttpStatus.OK);
     }
 
     @GetMapping("/{cartId}")
@@ -50,10 +51,10 @@ public class CartController {
     }
 
     //todo: Add products to cart.
-     @PostMapping("/{cartId}/add-products")
-     public ResponseEntity<CartDTO> addProductsToCart(@PathVariable final Long cartId) {
-        return new ResponseEntity<>(com.example.shopcart.service.Cart.toDto(cartService.addProductsToCart(cartId)),
-                HttpStatus.OK);
-     }
+//    @PostMapping("/{cartId}/add-products")
+//    public ResponseEntity<CartDTO> addProductToCart(@PathVariable final Long cartId) {
+//        return new ResponseEntity<>(com.example.shopcart.service.Cart.toDto(cartService.addProductToCart(cartId)),
+//                HttpStatus.OK);
+//    }
 
 }

@@ -1,14 +1,15 @@
 package com.example.shopcart.service;
 
 import com.example.shopcart.common.OrderStatus;
+import com.example.shopcart.exception.ApiRequestException;
 import com.example.shopcart.repository.Cart;
 import com.example.shopcart.repository.CartRepository;
 import com.example.shopcart.repository.ItemRepository;
-import jakarta.transaction.Transactional;
+import com.example.shopcart.repository.ProductRepository;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final ItemRepository itemRepository;
+    private final ProductRepository productRepository;
 
     public List<com.example.shopcart.service.Cart> getAllCarts() {
         return cartRepository.findAll().stream().map(com.example.shopcart.service.Cart::of).toList();
@@ -25,7 +27,7 @@ public class CartService {
 
     public com.example.shopcart.service.Cart getSingleCart(Long cartId) {
         return cartRepository.findById(cartId).map(com.example.shopcart.service.Cart::of)
-                .orElseThrow(() -> new RuntimeException("Cart does not exist."));
+                .orElseThrow(() -> new ApiRequestException("Cart does not exist."));
     }
 
     public com.example.shopcart.service.Cart createEmptyCart() {
@@ -53,20 +55,19 @@ public class CartService {
 
     }
 
-    @Transactional
-    public com.example.shopcart.service.Cart addProductsToCart(Long cartId) {
-        com.example.shopcart.service.Cart cart = cartRepository.findById(cartId).map(com.example.shopcart.service.Cart::of)
-                .orElseThrow(() -> new RuntimeException("Cart does not exist."));
-
-        var itemsToAdd = Arrays.asList(1L, 2L);
-
-        var items = itemRepository.findAll();
-
-        //.setOrderStatus(OrderStatus.PENDING);
-       // cart.setItems(items);
-
-        return cart;
-    }
+//    @Transactional
+//    public com.example.shopcart.service.Cart addProductToCart(Long cartId, Long productId) {
+//        var cart = cartRepository.findById(cartId).map(com.example.shopcart.service.Cart::of)
+//                .orElseThrow(() -> new RuntimeException("Cart does not exist."));
+//
+//        var product = productRepository.findById(productId).map(Product::of)
+//                .orElseThrow(() -> new RuntimeException("Product does not exist."));
+//
+//        cart.setOrderStatus(OrderStatus.PENDING);
+//        ...
+//
+//        return cart;
+//    }
 
 
 }

@@ -1,7 +1,5 @@
 package com.example.shopcart.controller;
 
-import com.example.shopcart.exception.ApiRequestException;
-import com.example.shopcart.repository.Cart;
 import com.example.shopcart.service.CartService;
 
 import org.springframework.http.HttpStatus;
@@ -45,16 +43,21 @@ public class CartController {
     }
 
     @PutMapping("/{cartId}/clear")
-    public ResponseEntity<Cart> clearCart(@PathVariable Long cartId) {
+    public ResponseEntity<CartDTO> clearCart(@PathVariable Long cartId) {
         return cartService.clearCart(cartId) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //todo: Add products to cart.
-//    @PostMapping("/{cartId}/add-products")
-//    public ResponseEntity<CartDTO> addProductToCart(@PathVariable final Long cartId) {
-//        return new ResponseEntity<>(com.example.shopcart.service.Cart.toDto(cartService.addProductToCart(cartId)),
-//                HttpStatus.OK);
-//    }
+    @PostMapping("/{cartId}/add-product/{productId}")
+    public ResponseEntity<Void> addProductToCart(@PathVariable final Long cartId, @PathVariable final Long productId) {
+        cartService.addProductToCart(cartId, productId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/{cartId}/add-products")
+    public ResponseEntity<Void> addProductsToCart(@PathVariable final Long cartId, @RequestBody List<Long> productIds) {
+        cartService.addProductsToCart(cartId, productIds);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

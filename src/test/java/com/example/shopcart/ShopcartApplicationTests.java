@@ -1,13 +1,32 @@
 package com.example.shopcart;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 class ShopcartApplicationTests {
 
+	Calculator underTest = new Calculator();
+
 	@Test
-	void contextLoads() {
+	void itShouldAddTwoNumbers() {
+		// given
+		int numberOne = 10;
+		int numberTwo = 30;
+
+		// when
+		int result = underTest.add(numberOne, numberTwo);
+
+		// then
+		assertAll(
+				() -> Assertions.assertThat(result).isEqualTo(40));
+	}
+
+	class Calculator {
+		int add(int a, int b) {
+			return a + b;
+		}
 	}
 
 }

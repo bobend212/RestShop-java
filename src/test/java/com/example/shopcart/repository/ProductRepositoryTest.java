@@ -1,8 +1,6 @@
-package com.example.shopcart;
+package com.example.shopcart.repository;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -17,15 +15,15 @@ public class ProductRepositoryTest {
     @Autowired
     ProductRepository productRepository;
 
-    @BeforeEach
-    void cleanUp() {
+    @AfterEach
+    void tearDown() {
         productRepository.deleteAll();
     }
 
     @Test
     void checkIfProductExistByProductName() {
         // given
-        String productName = "Water";
+        String productName = "Tomato";
         Product product = Product.builder()
                 .name(productName)
                 .price(10f)
@@ -34,9 +32,24 @@ public class ProductRepositoryTest {
         productRepository.save(product);
 
         // when
-        // var findProduct = productRepository.findBy()
+        boolean expected = productRepository.selectExistProduct(productName);
+
         // then
-        assertThat(productRepository.findById(product.getId())).isNotNull();
+        assertThat(expected).isTrue();
+    }
+
+
+    @Test
+    void checkIfProductDoesNotExistByProductName() {
+        // given
+        String productName = "Watermelon";
+
+        // when
+         var expectedProduct = productRepository.selectExistProduct(productName);
+
+         // then
+        assertThat(expectedProduct).isFalse();
 
     }
+
 }

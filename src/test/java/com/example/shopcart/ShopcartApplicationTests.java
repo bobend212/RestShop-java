@@ -12,15 +12,16 @@ class ShopcartApplicationTests {
 	@Test
 	void itShouldAddTwoNumbers() {
 		// given
-		int numberOne = 10;
-		int numberTwo = 30;
+		int numberOne = 2;
+		int numberTwo = 2;
 
 		// when
 		int result = underTest.add(numberOne, numberTwo);
 
 		// then
 		assertAll(
-				() -> Assertions.assertThat(result).isEqualTo(40));
+				() -> Assertions.assertThat(result).isEqualTo(4)
+		);
 	}
 
 	class Calculator {

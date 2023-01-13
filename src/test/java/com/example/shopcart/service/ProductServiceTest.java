@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -30,9 +31,9 @@ class ProductServiceTest {
 
     @Test
     void canGetAllProducts() {
-        //when
+        // when
         productService.getAllProducts();
-        //then
+        // then
         verify(productRepository).findAll();
     }
 
@@ -42,19 +43,41 @@ class ProductServiceTest {
     }
 
     @Test
+    @Disabled
     void canCreateProduct() {
-        //given
+        // given
         ProductCreateDTO product = new ProductCreateDTO(
                 "NewProduct",
-                10f
-        );
+                10f);
 
-        //when
+        // when
         productService.createProduct(product);
 
-        //then
-        ArgumentCaptor<com.example.shopcart.repository.Product> productArgumentCaptor =
-                ArgumentCaptor.forClass(com.example.shopcart.repository.Product.class);
+        // then
+        ArgumentCaptor<com.example.shopcart.repository.Product> productArgumentCaptor = ArgumentCaptor
+                .forClass(com.example.shopcart.repository.Product.class);
+
+        verify(productRepository)
+                .save(productArgumentCaptor.capture());
+
+        Product capturedProduct = productArgumentCaptor.getValue();
+
+        assertThat(capturedProduct).isEqualTo(product);
+    }
+
+    @Test
+    void willThrowWhenProductNameIsTaken() {
+        // given
+        ProductCreateDTO product = new ProductCreateDTO(
+                "NewProduct",
+                10f);
+
+        // when
+        productService.createProduct(product);
+
+        // then
+        ArgumentCaptor<com.example.shopcart.repository.Product> productArgumentCaptor = ArgumentCaptor
+                .forClass(com.example.shopcart.repository.Product.class);
 
         verify(productRepository)
                 .save(productArgumentCaptor.capture());

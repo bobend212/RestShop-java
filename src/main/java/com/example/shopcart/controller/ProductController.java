@@ -34,8 +34,13 @@ public class ProductController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Product> createProduct(@Validated @RequestBody ProductCreateDTO newProductBody) {
-        return new ResponseEntity<>(productService.createProduct(newProductBody), HttpStatus.CREATED);
+    public ResponseEntity<com.example.shopcart.repository.Product> createProduct(@Validated @RequestBody ProductCreateDTO newProductBody) {
+        return new ResponseEntity<>(productService.createProduct(
+                com.example.shopcart.repository.Product.builder()
+                        .name(newProductBody.name())
+                        .price(newProductBody.price())
+                        .build()
+        ), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{productId}")

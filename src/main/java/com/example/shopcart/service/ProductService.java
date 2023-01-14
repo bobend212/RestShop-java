@@ -26,12 +26,8 @@ public class ProductService {
                 .orElseThrow(() -> new ApiRequestException("Product does not exist."));
     }
 
-    public com.example.shopcart.service.Product createProduct(ProductCreateDTO newProduct) {
-        return com.example.shopcart.service.Product.of(productRepository.save(
-                com.example.shopcart.repository.Product.builder()
-                        .name(newProduct.name())
-                        .price(newProduct.price())
-                        .build()));
+    public com.example.shopcart.repository.Product createProduct(com.example.shopcart.repository.Product product) {
+        return productRepository.save(product);
     }
 
     public Boolean deleteProduct(Long productId) {

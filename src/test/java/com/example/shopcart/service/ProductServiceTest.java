@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,6 +23,7 @@ class ProductServiceTest {
 
     @Mock
     private ProductRepository productRepository;
+
     private ProductService productService;
 
     @BeforeEach
@@ -43,34 +45,30 @@ class ProductServiceTest {
     }
 
     @Test
-    @Disabled
     void canCreateProduct() {
         // given
-        ProductCreateDTO product = new ProductCreateDTO(
-                "NewProduct",
-                10f);
+        Product product = Product.builder()
+                .name("TestProduct")
+                .price(10f)
+                .build();
 
         // when
         productService.createProduct(product);
 
         // then
-        ArgumentCaptor<com.example.shopcart.repository.Product> productArgumentCaptor = ArgumentCaptor
-                .forClass(com.example.shopcart.repository.Product.class);
-
-        verify(productRepository)
-                .save(productArgumentCaptor.capture());
-
+        ArgumentCaptor<Product> productArgumentCaptor = ArgumentCaptor.forClass(Product.class);
+        verify(productRepository).save(productArgumentCaptor.capture());
         Product capturedProduct = productArgumentCaptor.getValue();
-
         assertThat(capturedProduct).isEqualTo(product);
     }
 
     @Test
     void willThrowWhenProductNameIsTaken() {
         // given
-        ProductCreateDTO product = new ProductCreateDTO(
-                "NewProduct",
-                10f);
+        Product product = Product.builder()
+                .name("TestProduct")
+                .price(10f)
+                .build();
 
         // when
         productService.createProduct(product);
